@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  nsp_backend:
+    container_name: nsp_backend
+    image: francescoxx/nsp-template:0.0.2
+    build:
+      context: .
+    ports:
+      - "3001:3001"
+    environment:
+      - EXTERNAL_PORT=3001
+      - PGUSER=francesco
+      - PGPASSWORD=12345
+      - PGDATABASE=nsp_database
+      - PGHOST=nsp_db # NAME OF THE SERVICE
+    depends_on:
+      - nsp_db
+  nsp_db:
+    container_name: nsp_db
+    image: "postgres:12"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=francesco
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=nsp_database
+    volumes:
+      - nps_data:/var/lib/postgresql/data
+volumes:
+  nps_data: {}
